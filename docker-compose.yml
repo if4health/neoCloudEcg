@@ -1,0 +1,22 @@
+version: "3.1"
+services:
+  cloud-ecg:
+    image: cloud-ecg:latest
+    container_name: CLOUD_ECG1
+    build: "./"
+    restart: always
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    environment:
+      - DEFAULT_URL=${DEFAULT_URL}
+      - OAUTH_PUB=${OAUTH_PUB}
+      - OAUTH_PRIVATE=${OAUTH_PRIVATE}
+    volumes:
+      - ".:/usr/src/app"
+      - "./node_modules:/usr/src/app/node_modules"
+    command: yarn start
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"

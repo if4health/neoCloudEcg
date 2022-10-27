@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: #143d59;
+                color: white;
+                font-weight: bold;
+            }
+            .center {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            h1 {
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+        <form method="POST" action="/auth/authorize">
+            <h1>Essa aplicação está solicitando os seguintes dados:</h1>
+            <ul>
+            <% const scopes = checkScope(scope);
+                const resources = Object.keys(scopes);
+                const mapResources = {
+                    "Patient": "dados do paciente",
+                    "Observation": "dados de exames"
+                };
+                const mapPermissions = {
+                    "GET": "Ler",
+                    "POST": "Criar",
+                    "PUT": "Alterar",
+                    "DELETE": "Excluir"
+                };
+                for(let resource of resources) {
+                    for(let i = 0; i < scopes[resource].length; i++) {
+                        const method = Object.keys(scopes[resource][i])[0];
+                        if(method != 'undefined') { %>
+                            <li><%= mapPermissions[method] %> <%= mapResources[resource] %></li>
+                    <% }
+                    }
+                }
+            %>
+            </ul>
+            <input type="hidden" name="redirect_uri" value="<%= redirect_uri %>">
+            <input type="hidden" name="state" value="<%= state %>">
+            <input type="hidden" name="aud" value="<%= aud %>">
+            <input type="hidden" name="scope" value="<%= scope %>">
+            <input type="hidden" name="client_id" value="<%= client_id %>">
+            <input type="hidden" name="paciente_id" value="<%= paciente_id %>">
+            <input type="submit" value="Autorizar">
+        </form>
+    </div>
+    </body>
+</html>

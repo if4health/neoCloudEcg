@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: #143d59;
+                color: white;
+                font-weight: bold;
+            }
+            .center {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <form method="POST" action="/auth/select" id="form">
+                <input type="hidden" name="redirect_uri" value="<%= redirect_uri %>">
+                <input type="hidden" name="state" value="<%= state %>">
+                <input type="hidden" name="aud" value="<%= aud %>">
+                <input type="hidden" name="scope" value="<%= scope %>">
+                <input type="hidden" name="client_id" value="<%= client_id %>">
+                <input type="hidden" name="medico_id" value="<%= medico_id %>">
+                <% for(let i = 0; i < patients.length; i++) { %>
+                    <input type="radio" name="patient" id="patient-<%= patients[i].id %>" value="<%= patients[i].id %>" onclick="handleClick('<%= patients[i].id %>')" />
+                    <label for="patient-<%= patients[i].id %>"><%= patients[i].name %></label>
+                <% } %>
+            </form>
+        </div>
+        <script>
+            function handleClick(id) {
+                document.getElementById('form').submit();
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<html>
+    <body>
+        <button type="button" id="launch" style="
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        background-image: linear-gradient(to bottom,#5cb85c 0,#419641 100%);
+        border-color: #3e8f3e;">Launch</button>
+        <iframe id="app" style="
+        border: 1px solid black;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex: 1 1 100px;
+        flex: 1 1 100px;
+        box-sizing: border-box;
+        background: rgb(255, 255, 255);
+        height: 75%;
+        width: 100%;"></iframe>
+        <script>
+            document.getElementById('launch').addEventListener('click', (ev) => {
+                const iframe = document.getElementById("app");
+                iframe.src = `http://localhost:3000?launch=eyJhIjoiMSIsImYiOiIxIn0&iss=http://localhost:8000`;
+            });
+        </script>
+    </body>
+</html>
