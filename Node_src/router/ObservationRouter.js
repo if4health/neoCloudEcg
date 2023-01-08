@@ -7,6 +7,10 @@ router.get('/:id', ObservationController.getObservationById);
 
 router.get('/', ObservationController.getObservation);
 
+router.get("/:id/data/:start/:end", ObservationController.getObservationByStartAndEnd);
+
+router.get("/:id/data/:min", ObservationController.getObservationByMin);
+
 router.patch('/:id', ObservationController.patchComponent);
 
 router.put('/:id', ObservationController.updateObservation);

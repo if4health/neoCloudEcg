@@ -1,11 +1,9 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const AuthDatabase = require('../model/BusinessModels/Auth')();
-const AppDatabase = require('../model/BusinessModels/Apps')();
-const DispositivosDatabase = require('../model/BusinessModels/Dispositivos')();
 const PacienteService = require('./PacienteService');
 const MedicoService = require('./MedicoService');
-const PatientService = require('./PatientService');
+const PatientSchema = require("../model/patient/Patient");
 const {
   signPayload,
   verifyToken,
@@ -13,33 +11,6 @@ const {
 } = require('../utils/keys');
 
 class AuthService {
-  async register(params) {
-    try {
-      let app = await AppDatabase.findOne({
-        client_id: params.client_id,
-      });
-      console.log(app, params);
-      if (!app) {
-        app = await AppDatabase.create({
-          client_id: params.client_id,
-          client_secret: params.client_secret,
-          scope: params.scope,
-          redirect_uri: params.redirect_uri,
-        });
-      }
-      if (
-        app.redirect_uri !== params.redirect_uri ||
-        app.scope !== params.scope
-      ) {
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
   async login(body) {
     try {
       let login = await PacienteService.find({
@@ -79,7 +50,7 @@ class AuthService {
         };
       }
 
-      const patient = await PatientService.findOne({
+      const patient = await PatientSchema.findOne({
         identifier: {
           $elemMatch: {
             value: mongoose.Types.ObjectId(login[0]._id),
@@ -101,7 +72,7 @@ class AuthService {
 
   async authorize(params) {
     try {
-      const patient = await PatientService.findOne({
+      const patient = await PatientSchema.findOne({
         identifier: {
           $elemMatch: {
             value: mongoose.Types.ObjectId(params.paciente_id),
@@ -112,7 +83,6 @@ class AuthService {
         { patient: patient._id, scope: params.scope },
         60
       );
-      console.log(code);
       await AuthDatabase.create({
         aud: params.aud,
         scope: params.scope,
@@ -128,13 +98,12 @@ class AuthService {
         code,
       };
     } catch (e) {
-      console.log(e);
       return e;
     }
   }
 
   async select(body) {
-    const patient = await PatientService.getPatientById(body.patient);
+    const patient = await PatientSchema.findById(body.patient);
     const code = await signPayload(
       { patient: patient._id, scope: body.scope },
       3600
@@ -155,25 +124,14 @@ class AuthService {
 
   async token(body) {
     try {
-      if (!body.code) {
+      if (body.code == null) {
         return {
           code: 400,
           message: 'Invalid params',
         };
       }
-      console.log(body);
       if (body.grant_type === 'authorization_code') {
         const decodedJWT = await verifyToken(body.code);
-        const app = await AppDatabase.findOne({
-          client_id: body.client_id,
-          redirect_uri: body.redirect_uri,
-        });
-        if (!app) {
-          return {
-            code: 401,
-            message: 'Invalid application',
-          };
-        }
         const result = await AuthDatabase.findOne({
           client_id: body.client_id,
           redirect_uri: body.redirect_uri,
@@ -192,7 +150,7 @@ class AuthService {
         }
         result.authorization_code = null;
         await result.save();
-        const patient = await PatientService.getPatientById(decodedJWT.patient);
+        const patient = await PatientSchema.findById(decodedJWT.patient);
         const access_token = await signPayload(
           {
             scope: decodedJWT.scope,
@@ -229,7 +187,7 @@ class AuthService {
       } else {
         const decodedJWT = verifySymmetricToken(body.code);
         if (decodedJWT.grant_type === 'client_credentials') {
-          const result = await DispositivosDatabase.findOne({
+          const result = await AuthDatabase.findOne({
             client_id: decodedJWT.client_id,
             client_secret: decodedJWT.client_secret,
           });

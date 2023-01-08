@@ -4,11 +4,6 @@ const { queryObj } = require('../utils/request');
 
 class AuthController {
   async register(req, res) {
-    const register = await AuthService.register(req.query);
-    if (!register)
-      return res
-        .status(401)
-        .json({ code: 401, error: 'App failed to register' });
     res.redirect(queryObj('/auth/login', req.query));
   }
 
