@@ -5,7 +5,7 @@ module.exports = {
   format: ['application/fhir+json'],
   implementation: {
     description: 'FHIR REST Server',
-    url: `${process.env.DEFAULT_URL}/baseR4`,
+    url: `${process.env.DEFAULT_URL}`,
   },
   status: 'active',
   rest: [

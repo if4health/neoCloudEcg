@@ -37,16 +37,11 @@ class AuthService {
       const auth = await AuthDatabase.findOne({
         client_id: body.client_id,
         paciente_id: login[0]._id,
+        redirect_uri: body.redirect_uri,
       });
       if (!auth || auth.length === 0) {
         return {
           login: login[0],
-        };
-      }
-      if (auth.redirect_uri !== body.redirect_uri) {
-        return {
-          code: 401,
-          message: 'Wrong client info',
         };
       }
 

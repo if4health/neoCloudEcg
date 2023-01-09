@@ -21,8 +21,8 @@ router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 router.use('/auth', authRouter);
 
-router.use('/baseR4/Patient', verifyJWT, patientRouter);
-router.use('/baseR4/Observation', verifyJWT, observationRouter);
+router.use('/Patient', verifyJWT, patientRouter);
+router.use('/Observation', verifyJWT, observationRouter);
 
 router.get('/render', (req, res) => {
   const data = new set_data(req.query['id']);
@@ -48,7 +48,7 @@ router.get('/key', async (req, res) => {
   res.json(await jose.exportJWK(key));
 });
 
-router.get('/baseR4/metadata', (req, res) => {
+router.get('/metadata', (req, res) => {
   res.json(metadata);
 });
 
