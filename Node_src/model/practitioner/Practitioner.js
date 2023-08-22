@@ -6,6 +6,7 @@ const Address = require('./Address');
 const Attachment = require('./Attachment');
 const Practitioner_Qualification = require('./Practitioner_Qualification');
 const CodeableConcept = require('./CodeableConcept');
+
 module.exports = function () {
   const Practitioner = {
     id: {

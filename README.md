@@ -53,7 +53,7 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 pip install biosspy
 pip install certifi
-pip install request
+pip install requests
 pip install pymongo[srv]
 pip install python-dotenv
 ```

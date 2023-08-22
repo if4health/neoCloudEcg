@@ -1,4 +1,5 @@
 const AuthService = require('../service/AuthService');
+const crypto = require('crypto');
 const PatientService = require('../service/PatientService');
 const { queryObj } = require('../utils/request');
 

@@ -16,7 +16,7 @@ RUN  apt-get update -y; apt-get install -y libhdf5-dev; apt install pkg-config l
 RUN pip3 install biosppy
 
 RUN pip3 install pymongo[tls] ; pip3 install python-dotenv ;\
-  pip3 install dnspython ; pip3 install certifi ; pip3 install requests
+  pip3 install dnspython ; pip3 install certifi ; pip3 install request
 
 COPY package.json /usr/src/app
 RUN cd /usr/src/app && rm -rf node_modules && rm -rf package-lock.json && npm install

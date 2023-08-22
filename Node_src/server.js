@@ -15,15 +15,16 @@ mongoDB.mongodb.once('open', (_) => {
   console.log('Mongo Conectado');
 });
 
-/* app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        formAction: '*',
-      },
-    },
-  })
-); // Habilitar formAction e script-src-attr para que as views funcionem, ou mudar estrutura do front */
+//  app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         formAction: '*',
+//       },
+//     },
+//   })
+// ); // Habilitar formAction e script-src-attr para que as views funcionem, ou mudar estrutura do front
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../img')));
 app.set('view engine', 'ejs');

@@ -22,7 +22,6 @@ module.exports = {
               },
               {
                 url: 'token',
-                valueUri: `${process.env.DEFAULT_URL}/auth/token`,
               },
             ],
           },

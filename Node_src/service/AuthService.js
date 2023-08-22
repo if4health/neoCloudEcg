@@ -125,6 +125,7 @@ class AuthService {
           message: 'Invalid params',
         };
       }
+    
       if (body.grant_type === 'authorization_code') {
         const decodedJWT = await verifyToken(body.code);
         const result = await AuthDatabase.findOne({
@@ -133,6 +134,7 @@ class AuthService {
           patient_id: new mongoose.Types.ObjectId(decodedJWT.patient),
           authorization_code: body.code,
         });
+
         let arrayScopes = result.scope.split(' ');
         if (decodedJWT.scope !== undefined) {
           arrayScopes = decodedJWT.scope.split(' ');
@@ -179,7 +181,11 @@ class AuthService {
           retorno.patient = decodedJWT.patient;
         }
         return retorno;
-      } else {
+      } 
+      
+      
+      
+      else {
         const decodedJWT = verifySymmetricToken(body.code);
         if (decodedJWT.grant_type === 'client_credentials') {
           const result = await AuthDatabase.findOne({
