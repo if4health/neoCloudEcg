@@ -28,9 +28,7 @@
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
     "formidable": "^1.2.2",
-    "prettier": "^2.5.1",
-    "swagger-jsdoc": "^4.0.0",
-    "swagger-ui-express": "^4.1.4"
+    "prettier": "^2.5.1"
   },
   "scripts": {
     "start": "node Node_src/server.js",
