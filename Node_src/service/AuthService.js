@@ -77,7 +77,7 @@ class AuthService {
       const code = await signPayload(
         { patient: patient._id, scope: params.scope },
         60
-      );
+        );
       await AuthDatabase.create({
         aud: params.aud,
         scope: params.scope,

@@ -1,5 +1,4 @@
 const AuthService = require('../service/AuthService');
-const crypto = require('crypto');
 const PatientService = require('../service/PatientService');
 const { queryObj } = require('../utils/request');
 
@@ -7,11 +6,11 @@ class AuthController {
   async register(req, res) {
     res.redirect(queryObj('/auth/login', req.query));
   }
-
+  
   login(req, res) {
     res.render('login', req.query);
   }
-
+  
   async postLogin(req, res) {
     const { redirect_uri, state, aud, scope, client_id } = req.body;
     const login = await AuthService.login(req.body);
