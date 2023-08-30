@@ -21,7 +21,9 @@
     "mongoose": "^6.4.3",
     "mongoose-to-swagger": "^1.4.0",
     "nodemon": "^3.0.1",
-    "yarn": "^1.22.19",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
