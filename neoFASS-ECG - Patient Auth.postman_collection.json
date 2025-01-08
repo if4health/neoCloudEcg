@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "5f2ec920-f69a-4198-b881-55e9c3c116c1",
+		"name": "neoFASS-ECG - Patient Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39396202"
+	},
+	"item": [
+		{
+			"name": "1 - Well-Known",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set('token_endpoint', pm.response.json().token_endpoint)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/.well-known/smart-configuration",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						".well-known",
+						"smart-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 - Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/register?redirect_uri=/api-docs&scope&token_endpoint={{token_endpoint}}&client_id&aud=placeholder&state=placeholder",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "redirect_uri",
+							"value": "/api-docs",
+							"description": "Caminho do Swagger"
+						},
+						{
+							"key": "scope",
+							"value": null,
+							"description": "Escopo do usuário"
+						},
+						{
+							"key": "token_endpoint",
+							"value": "{{token_endpoint}}",
+							"description": "Rota para obter o token"
+						},
+						{
+							"key": "client_id",
+							"value": null,
+							"description": "ID do usuário registrado no Mongo"
+						},
+						{
+							"key": "aud",
+							"value": "placeholder"
+						},
+						{
+							"key": "state",
+							"value": "placeholder"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3 - Login",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"redirect_uri\": \"/api-docs\",\r\n    \"scope\": \"patient/*.rs\",\r\n    \"token_endpoint\": \"{{token_endpoint}}\",\r\n    \"client_id\": \"{{client_id}}\",\r\n    \"aud\": \"placeholder\",\r\n    \"state\": \"placeholder\",\r\n    \"cpf\": \"123\",\r\n    \"senha\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4 - Authorize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const sdk = require('postman-collection');\r",
+							"\r",
+							"let location = \"http://www.foo.com\" + pm.response.headers.get('location');\r",
+							"let authorizationCode = new sdk.Url(location).query.get('code');\r",
+							"pm.environment.set('authorization_code', authorizationCode);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followRedirects": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"redirect_uri\": \"/api-docs\",\r\n    \"scope\": \"patient/*.rs\",\r\n    \"token_endpoint\": \"{{token_endpoint}}\",\r\n    \"client_id\": \"{{client_id}}\",\r\n    \"paciente_id\": \"{{paciente_id}}\",\r\n    \"aud\": \"placeholder\",\r\n    \"state\": \"placeholder\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/authorize",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"authorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5 - Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set('access_token', pm.response.json().access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grant_type\": \"authorization_code\",\r\n    \"scope\":\"patient/*.rs\",\r\n    \"code\": \"{{authorization_code}}\",\r\n    \"redirect_uri\": \"/api-docs\",\r\n    \"client_id\": \"{{client_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

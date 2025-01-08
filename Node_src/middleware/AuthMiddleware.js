@@ -95,18 +95,7 @@ module.exports.verifyJWT = async function verifyJWT(req, res, next) {
   if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
 
   try {
-    /*
-     const code = token.split(' ')[1]; 
-
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     
-      linha escrita por leonardo e comentada por vinícius pois durante os seus testes
-      o código não funciona quando esta linha estava livre. o motivo é que ela tenta 
-      pegar a primeira parte de um bearer token separando as partes pelo " " sendo que 
-      lhe é fornecido um JWT que não possui " " no seu payload e então acaba retornando 
-      null e impede a ATUAl linha 110 de funcionar.
-    */
-
-    const code = token;    
+    const code = token.split(' ')[1]; 
     const key = await getPublicKey();
     const decoded = jwt.verify(code, key);
     if (!decoded.scope)
